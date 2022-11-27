@@ -6,6 +6,11 @@
 import os
 from tools.utils import replace_func, load_api_yaml
 
+if not os.path.exists("generated/tensor"):
+    if not os.path.exists("generated"):
+        os.mkdir("generated")
+    os.mkdir("generated/tensor")
+
 yaml_paths = ['tools/yaml/strings_ops.yaml', 'tools/yaml/sparse_backward.yaml',
               'tools/yaml/backward.yaml', 'tools/yaml/sparse_ops.yaml',
               'tools/yaml/legacy_ops.yaml', 'tools/yaml/legacy_backward.yaml', 'tools/yaml/ops.yaml']

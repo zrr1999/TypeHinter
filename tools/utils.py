@@ -42,7 +42,7 @@ def dump_func(name: str, inputs: list, outputs: list, hint=False):
             outputs = f"{outputs[0]}"
         else:
             outputs = f"typing.List{outputs}"
-        return f"def {name}({inputs}, name=None) -> {outputs}: "
+        return f"def {name}({inputs}, name: str = None) -> {outputs}: "
     else:
         inputs = ", ".join([
             n for t, n in inputs
