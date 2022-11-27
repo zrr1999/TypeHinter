@@ -1,12 +1,7 @@
 # TypeHinter
 
-## 项目结构组织
-- generated
-- source
-- tools
-    - yaml
-    - utils.py
-- demo.py
+## 项目介绍
+该项目是针对 Paddle 添加 type-hint 的实验项目。
 
 ## 使用方法
 
