@@ -16,13 +16,11 @@ if not os.path.exists("generated/tensor"):
         os.mkdir("generated")
     os.mkdir("generated/tensor")
 
-yaml_paths = ['tools/yaml/parsed_apis/api.parsed.yaml',
-              'tools/yaml/parsed_apis/legacy_api.parsed.yaml',
-              'tools/yaml/parsed_apis/backward_api.parsed.yaml',
-              'tools/yaml/parsed_apis/legacy_backward_api.parsed.yaml']
+yaml_dir = "tools/parsed_ops/"
+yaml_paths = os.listdir(yaml_dir)
 yaml_funcs = {}
 for yaml_path in yaml_paths:
-    yaml_funcs.update(load_parsed_yaml(yaml_path))
+    yaml_funcs.update(load_parsed_yaml(yaml_dir+yaml_path))
 
 source_paths = ['source/tensor/manipulation.py', 'source/tensor/attribute.py', 'source/tensor/creation.py',
                 'source/tensor/einsum.py', 'source/tensor/random.py',
