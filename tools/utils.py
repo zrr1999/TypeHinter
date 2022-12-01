@@ -21,13 +21,13 @@ def load_parsed_yaml(path: str) -> dict[str, tuple[list, list]]:
     return func_list
 
 
-def dump_func(name: str, inputs: list, outputs: list, defaults:list, hint=True):
+def dump_func(name: str, inputs: list, outputs: list, defaults: list, hint=True):
     if hint:
         inputs = [
             f"{n}: {t}" for t, n in inputs
         ]
         for i, v in enumerate(defaults, 1):
-            inputs[len(inputs)-i] += f" = {v}"
+            inputs[len(inputs) - i] += f" = {v}"
         inputs = ", ".join(inputs)
         if len(outputs) == 1:
             outputs = f"{outputs[0]}"
@@ -60,3 +60,39 @@ def get_source_func(module: ast.Module):
                 "lineno": node.lineno
             })
     return res
+
+
+def replace_paddle(source_path: str, yaml_funcs: dict[str, tuple[list, list]], inplace=True):
+    assert inplace  # TODO: not inplace mode
+    not_replaced = []
+    replaced = []
+    with open(source_path, 'r') as file:
+        lines = file.readlines()
+        source = "".join(lines)
+        module = ast.parse(source)
+        source_funcs = get_source_func(module)
+
+    for func in source_funcs:
+        yaml_func = yaml_funcs.get(func["name"])
+
+        if yaml_func is None or (len(func["args"]) != len(yaml_func[0])):
+            # print(func["name"], len(func["args"]))
+            not_replaced.append((func, yaml_func))
+        else:
+            matched = True
+            for a, ya in zip(func["args"], yaml_func[0]):
+                if a != ya[1]:
+                    not_replaced.append((func, yaml_func))
+                    matched = False
+                    print(func["name"], a, ya)
+                    break
+            if matched:
+                lines[func["lineno"] - 1] = dump_func(func["name"], *yaml_func, func["defaults"])
+
+                # print(lines[func["lineno"]])
+                replaced.append((func, yaml_func))
+
+    with open(source_path, mode="w") as file:
+        file.write("".join(lines))
+
+    return replaced, not_replaced
