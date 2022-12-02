@@ -44,7 +44,7 @@ def dump_func(name: str, inputs: list, outputs: list, defaults: list, end_arg: s
 
         if not isinstance(end_arg, str):
             if end_arg[0] == "name":
-                end_arg = "name: str = None"
+                end_arg = "name: str|None = None"
             else:
                 if end_arg[1] is not None:
                     end_arg = f"{end_arg[0]}: {type(end_arg[1]).__name__} = {end_arg[1]}"
