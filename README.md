@@ -6,6 +6,6 @@
 ## 使用方法
 
 ```sh
-ln {你的Paddle路径}/python/paddle .
+ln -s {你的Paddle路径}/python/paddle .
 python replace.py
 ```
